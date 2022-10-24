@@ -44,12 +44,13 @@ export default function Home() {
             <option value={"user"}>Front Camera</option>
           </select>
           <QrReader
-            facingMode={selected}
+            // facingMode={selected}
             delay={1000}
             onError={handleError}
             onScan={handleScan}
+            constraints={{facingMode: selected}}
             // chooseDeviceId={()=>selected}
-            style={{ width: "300px" }}
+            containerStyle={{ width: "300px" }}
           />
         </>
       )}
