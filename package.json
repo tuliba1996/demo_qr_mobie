@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "add": "^2.0.6",
     "next": "12.3.1",
+    "qrscan": "^1.0.6",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-qr-reader": "^3.0.0-beta-1",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "eslint": "8.26.0",
