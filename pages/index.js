@@ -8,17 +8,17 @@ export default function Home() {
   const [loadingScan, setLoadingScan] = useState(false);
   const [data, setData] = useState("");
 
-  const handleScan = async (scanData) => {
-    setLoadingScan(true);
-    console.log(`loaded data data`, scanData);
-    if (scanData && scanData !== "") {
-      console.log(`loaded >>>`, scanData);
-      setData(scanData);
-      setStartScan(false);
-      setLoadingScan(false);
-      // setPrecScan(scanData);
-    }
-  };
+  // const handleScan = async (scanData) => {
+  //   setLoadingScan(true);
+  //   console.log(`loaded data data`, scanData);
+  //   if (scanData && scanData !== "") {
+  //     console.log(`loaded >>>`, scanData);
+  //     setData(scanData);
+  //     setStartScan(false);
+  //     setLoadingScan(false);
+  //     // setPrecScan(scanData);
+  //   }
+  // };
   const handleError = (err) => {
     console.error(err);
   };
@@ -47,7 +47,15 @@ export default function Home() {
             // facingMode={selected}
             delay={1000}
             onError={handleError}
-            onScan={handleScan}
+            onResult={(result, error) => {
+              if (!!result) {
+                setData(result?.text);
+              }
+
+              if (!!error) {
+                console.info(error);
+              }
+            }}
             constraints={{facingMode: selected}}
             // chooseDeviceId={()=>selected}
             containerStyle={{ width: "300px" }}
