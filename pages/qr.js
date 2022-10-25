@@ -1,7 +1,7 @@
 import { Container, Stack, Image, Button, Center } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { chain } from "wagmi";
 
@@ -11,7 +11,7 @@ const ShowQr = () => {
   const { address, isConnected } = useAccount();
 
   const { connect } = useConnect({
-    connector: new WalletConnectConnector({
+    connector: new MetaMaskConnector({
       chains: [chain.mainnet, chain.optimism],
     }),
   });
