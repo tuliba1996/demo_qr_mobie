@@ -1,7 +1,16 @@
-import { Container, Stack, Image, Button, Center } from "@chakra-ui/react";
+import {
+  Container,
+  Stack,
+  Image,
+  Button,
+  Center,
+  LinkBox,
+  Box,
+} from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import {
   useAccount,
   useConnect,
@@ -15,6 +24,8 @@ import ERC721ABI from "../src/ERC-721.json";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
+import AppJdenticon from "../src/AppJdenticon";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 
 const ShowQr = () => {
   const router = useRouter();
@@ -49,8 +60,11 @@ const ShowQr = () => {
   }, [address]);
 
   const { connect } = useConnect({
-    connector: new MetaMaskConnector({
+    connector: new WalletConnectConnector({
       chains: [chain.mainnet, chain.optimism],
+      options: {
+        qrcode: true,
+      },
     }),
   });
 
@@ -68,7 +82,7 @@ const ShowQr = () => {
 
   return (
     <Container>
-      <Stack direction="row" spacing={4} margin="1rem">
+      <Stack direction="row" spacing={4} marginY="2rem">
         <Button
           leftIcon={<ArrowBackIcon />}
           colorScheme="teal"
@@ -77,13 +91,6 @@ const ShowQr = () => {
         >
           Back
         </Button>
-      </Stack>
-      <Stack direction="row" marginY="3rem" justifyContent="center">
-        {data && (
-          <div style={{ background: "white", padding: "16px" }}>
-            <QRCode value={`${address}::${tokenId}::${data}::${timeSign}`} />
-          </div>
-        )}
       </Stack>
       <Stack>
         {!isConnected ? (
@@ -96,6 +103,9 @@ const ShowQr = () => {
           </Button>
         ) : (
           <>
+            {address && (
+              <p style={{ marginTop: "2rem" }}>Account Address: {address}</p>
+            )}
             <Button
               onClick={() => disconnect()}
               colorScheme="teal"
@@ -104,15 +114,44 @@ const ShowQr = () => {
               Disconnect Wallet
             </Button>
             <div>
-              {address && (
-                <p style={{ marginTop: "2rem" }}>Account Address: {address}</p>
-              )}
               {tokenIds.map((tokenId) => (
-                <div key={tokenId}>
+                <Box
+                  flexDirection="column"
+                  marginY="2rem"
+                  justifyContent="center"
+                  key={tokenId}
+                >
                   Token ID: {tokenId}
-                  <Button onClick={() => SignMessage(tokenId)}>Sign</Button>
-                </div>
+                  <AppJdenticon size={150} value={tokenId} />
+                  <Button marginY="1rem" onClick={() => SignMessage(tokenId)}>
+                    Check In
+                  </Button>
+                </Box>
               ))}
+            </div>
+          </>
+        )}
+      </Stack>
+
+      <Stack
+        direction="row"
+        marginY="3rem"
+        justifyContent="center"
+        flexDirection="column
+      "
+      >
+        {data && (
+          <>
+            <div
+              style={{
+                background: "white",
+                padding: "16px",
+              }}
+            >
+              <QRCode value={`${address}::${tokenId}::${data}::${timeSign}`} />
+            </div>
+            <div style={{ width: "50%" }}>
+              <code>{`${address}::${tokenId}::${data}::${timeSign}`}</code>
             </div>
           </>
         )}

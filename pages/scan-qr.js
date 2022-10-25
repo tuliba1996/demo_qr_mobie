@@ -18,10 +18,10 @@ const ScanQr = () => {
           data: data,
         })
         .then((res) => {
-          alert(res.data);
+          setMessage("Checked successfully");
         })
         .catch((err) => {
-          alert(err.toString());
+          setMessage("Checked failed:" + err.message);
         });
     }
   }, [data]);
@@ -55,7 +55,7 @@ const ScanQr = () => {
           background: "gray",
         }}
       />
-      <Center>{data !== "" && <p>{data}</p>}</Center>
+      <Center>{message !== "" && <p>{message}</p>}</Center>
     </Container>
   );
 };
