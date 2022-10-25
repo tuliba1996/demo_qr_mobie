@@ -59,14 +59,15 @@ const ShowQr = () => {
     }
   }, [address]);
 
-  const { connect } = useConnect({
-    connector: new WalletConnectConnector({
-      chains: [chain.mainnet, chain.optimism],
-      options: {
-        qrcode: true,
-      },
-    }),
-  });
+  // const { connect } = useConnect({
+  //   connector: new MetaMaskConnector({
+  //     chains: [chain.mainnet, chain.optimism],
+  //     options: {
+  //       qrcode: true,
+  //     },
+  //   })
+  // });
+  const { connect, connectors, error, pendingConnector } = useConnect();
 
   const { disconnect } = useDisconnect();
 
@@ -94,13 +95,23 @@ const ShowQr = () => {
       </Stack>
       <Stack>
         {!isConnected ? (
-          <Button
-            onClick={() => connect()}
-            colorScheme="teal"
-            variant="outline"
-          >
-            Connect Wallet
-          </Button>
+          <div>
+            {connectors.map((connector) => (
+              <Button
+                disabled={!connector.ready}
+                key={connector.id}
+                onClick={() => connect({ connector })}
+                colorScheme="teal"
+                variant="outline"
+              >
+                {connector.name}
+                {!connector.ready && " (unsupported)"}
+                {isLoading &&
+                  connector.id === pendingConnector?.id &&
+                  " (connecting)"}
+              </Button>
+            ))}
+          </div>
         ) : (
           <>
             {address && (

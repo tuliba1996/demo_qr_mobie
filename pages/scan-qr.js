@@ -4,6 +4,7 @@ import { Button, Center, Container, Stack } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { GenerateUseTicker, ListNFT } from "../src/map-nft";
 
 const ScanQr = () => {
   const [data, setData] = useState("");
@@ -18,9 +19,15 @@ const ScanQr = () => {
           data: data,
         })
         .then((res) => {
-          setMessage("Checked successfully");
+          const { data } = res;
+          console.log(data);
+          setMessage(
+            "Checked successfully:" +
+              JSON.stringify(GenerateUseTicker(data.token_id), "", 2)
+          );
         })
         .catch((err) => {
+          console.log(err);
           setMessage("Checked failed:" + err.message);
         });
     }
