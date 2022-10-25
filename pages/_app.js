@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import WagmiClient from "../src/configWagmi";
+import WagmiClient from "../src/wagmiConfig";
 import { WagmiConfig } from "wagmi";
 
 function MyApp({ Component, pageProps }) {
